@@ -19,3 +19,5 @@ function restart() {
 function displayOutcome{
     //display if user is correct
 }
+
+// Testing
