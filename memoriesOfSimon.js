@@ -1,6 +1,86 @@
 let cards = [];
-let colors = ['blue', 'red', 'yellow', 'green'];
+let colors = [];
 let positions = [];
+
+class Game{
+  constructor(level){
+    this.level = level;
+  }
+  gameColors = ['blue', 'red', 'yellow', 'green']; 
+
+ populateColors(level){ 
+    for (let x = 0; x < this.level; x++){
+      let index = Math.floor(Math.random() * (level)) + 1;
+      colors.push(this.gameColors[index]); 
+    }
+  }
+
+ startLevel(){
+    this.populateColors(this.level);
+    document.querySelector('#title').style.animationName = 'titleSlideOut';
+    this.shuffle(colors);
+    this.generateCards(colors);
+    this.displayScore();
+    this.shuffle(colors);
+    // shuffle(positions);
+    document.querySelector('#playButton').style.display = 'none';
+    setTimeout(() => {
+      this.element.style.backgroundImage = background;
+    }, 400);
+  };  
+
+  generateCards(colors) {
+    let leng = colors.length;
+    for (let i = 0; i < leng; i++) {
+      new Card(colors[i]);
+    }
+    document.querySelector('#gameScreen').style.height = `${
+      350 * Math.floor(cards.length / 2)
+    }px`;
+  }
+
+  showColors(colors, i) {
+    let leng = colors.length;
+    let newColor = document.createElement('div');
+    newColor.classList.add('color');
+    newColor.style.backgroundColor = colors[i];
+    document.querySelector('#colors').appendChild(newColor);
+    if (i < leng - 1) {
+      setTimeout(() => {
+        showColors(colors, i + 1);
+      }, 250);
+    }
+  }
+  
+  shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+  }
+  
+  shuffleCards() {
+    shuffle(positions);
+    for (let i = 0; i < cards.length; i++) {
+      cards[i].x = positions[i][0];
+      cards[i].y = positions[i][1];
+      cards[
+        i
+      ].element.style.transform = `translateX(${cards[i].x}) translateY(${cards[i].y}) rotateY(0deg)`;
+    }
+  }
+  
+  flipCard() {
+    let leng = cards.length;
+    for (let i = 0; i < leng; i++) {
+      cards[i].flip();
+      setTimeout(() => {
+        cards[i].flip();
+      }, 2000);
+    }
+  }
+
+  displayScore(){
+    document.querySelector('#score').style.display = 'none';
+  }
+}
 
 class Card {
   constructor(color) {
@@ -62,78 +142,16 @@ class Card {
   };
 }
 
-function generateCards(colors) {
-  let leng = colors.length;
-  for (let i = 0; i < leng; i++) {
-    new Card(colors[i]);
-  }
-  document.querySelector('#gameScreen').style.height = `${
-    350 * Math.floor(cards.length / 2)
-  }px`;
-}
-
-function showColors(colors, i) {
-  let leng = colors.length;
-  let newColor = document.createElement('div');
-  newColor.classList.add('color');
-  newColor.style.backgroundColor = colors[i];
-  document.querySelector('#colors').appendChild(newColor);
-  if (i < leng - 1) {
-    setTimeout(() => {
-      showColors(colors, i + 1);
-    }, 250);
-  }
-}
-
-function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
-}
-
-function shuffleCards() {
-  shuffle(positions);
-  for (let i = 0; i < cards.length; i++) {
-    cards[i].x = positions[i][0];
-    cards[i].y = positions[i][1];
-    cards[
-      i
-    ].element.style.transform = `translateX(${cards[i].x}) translateY(${cards[i].y}) rotateY(0deg)`;
-  }
-}
-
-function flipCard() {
-  let leng = cards.length;
-  for (let i = 0; i < leng; i++) {
-    cards[i].flip();
-    setTimeout(() => {
-      cards[i].flip();
-    }, 2000);
-  }
-}
-
 function startGame() {
-  document.querySelector('#title').style.animationName = 'titleSlideOut';
-  shuffle(colors);
-  generateCards(colors);
-  shuffle(colors);
-  // shuffle(positions);
-  document.querySelector('#playButton').style.display = 'none';
-  setTimeout(() => {
-    flipCard();
-  }, 100);
-  setTimeout(() => {
-    showColors(colors, 0);
-  }, 4000);
-}
-
-function restart() {
-  let leng = cards.length;
-  for (let i = 0; i < leng; i++) {
-    cards[i].discard(new Event('test'));
-  }
-  cards = [];
-  startGame();
+  game = new Game(2);
+  game.startLevel();
 }
 
 function displayOutcome() {
   //display if user is correct
+}
+
+function restart() {
+  colors = [];
+  startGame();
 }
