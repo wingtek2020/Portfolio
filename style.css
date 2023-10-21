@@ -1,9 +1,131 @@
+* {
+  user-select: none;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(rgb(44, 44, 44) 0%, black 100%);
+  background-size: cover;
+}
+
+img {
+  position: absolute;
+  animation-fill-mode: forwards;
+  height: 35px;
+  top: 15px;
+  left: 100%;
+  animation-name: titleSlideIn;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+}
+
+#colors {
+  top: 10px;
+  position: relative;
+  width: 600px;
+  max-width: 100%;
+  height: 75px;
+  margin-bottom: 20px;
+  margin: auto;
+  background-color: white;
+  border-radius: 37.5px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+#gameScreen {
+  max-width: 100%;
+  height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 500px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+#playButton {
+  font-size: 100px;
+  width: 300px;
+  color: white;
+  text-shadow: 0px 0px 10px black;
+  position: absolute;
+  background: rgba(128, 128, 128, 0.534);
+  border: none;
+  border-radius: 10px;
+  top: calc(200px);
+  left: calc(50% - 150px);
+  z-index: 2;
+}
+
+#restart {
+  z-index: 3;
+  height: 75px;
+  width: 75px;
+  border-radius: 0% 50% 50% 0%;
+  border-width: 0px 0px 0px 0px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+#playButton:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+#playButton:active {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .card {
-  width: 250px;
-  height: 350px;
+  aspect-ratio: 1 / 1.4;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 50%;
   transition: transform 0.8s ease-in-out;
+  background-size: contain;
 }
 
 .flipped {
-  transform: rotateY(180deg);
+  transform: translateX(100%) rotateY(180deg);
+}
+
+.color {
+  position: absolute;
+  border: 10px solid black;
+  height: 50px;
+  width: 50px;
+  top: 2.5px;
+  left: 100%;
+  animation-name: colorSlide;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+}
+
+@keyframes colorSlide {
+  from {
+    left: 100%;
+  }
+  to {
+    left: -10%;
+  }
+}
+
+@keyframes titleSlideIn {
+  from {
+    left: 115%;
+  }
+  to {
+    left: 5%;
+  }
+}
+
+@keyframes titleSlideOut {
+  from {
+    left: 5%;
+  }
+  to {
+    left: -95%;
+  }
 }
