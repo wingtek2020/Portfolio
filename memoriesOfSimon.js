@@ -1,22 +1,24 @@
 let cards = [];
 let colors = [];
+let userColorPics = [];
 let positions = [];
+let level = 1;
+
+
 
 class Game{
-  constructor(level){
-    this.level = level;
-  }
   gameColors = ['blue', 'red', 'yellow', 'green']; 
 
- populateColors(level){ 
-    for (let x = 0; x < this.level; x++){
+ populateColors(){ 
+    for (let x = 0; x < (level * 2); x++){
       let index = Math.floor(Math.random() * (level)) + 1;
       colors.push(this.gameColors[index]); 
     }
   }
 
  startLevel(){
-    this.populateColors(this.level);
+    this.populateColors();
+    document.querySelector('#restart').addEventListener('click', restart);
     document.querySelector('#title').style.animationName = 'titleSlideOut';
     this.shuffle(colors);
     this.generateCards(colors);
@@ -24,8 +26,9 @@ class Game{
     this.shuffle(colors);
     // shuffle(positions);
     document.querySelector('#playButton').style.display = 'none';
+    document.querySelector('#gameLevel').style.display = 'none';
     setTimeout(() => {
-      this.element.style.backgroundImage = background;
+      //this.element.style.backgroundImage = background;
     }, 400);
   };  
 
@@ -78,7 +81,7 @@ class Game{
   }
 
   displayScore(){
-    document.querySelector('#score').style.display = 'none';
+    //document.querySelector('#score').style.display = 'none';
   }
 }
 
@@ -133,6 +136,11 @@ class Card {
     setTimeout(() => {
       this.element.style.backgroundImage = background;
     }, 400);
+
+    userColorPics.push(this.color);
+    console.log(userColorPics.toString());
+    if (userColorPics.toString() === colors.toString())
+      displayWonLevel();
   };
 
   discard = (e) => {
@@ -144,14 +152,31 @@ class Card {
 
 function startGame() {
   game = new Game(2);
+  document.querySelector('#playButton').hidden = true;
+  document.querySelector('#restart').hidden = false;
+
   game.startLevel();
 }
 
-function displayOutcome() {
+function displayWonLevel(){
+  var vid = document.getElementById("winningVid");
+  vid.hidden = false;
+  vid.play();
+}
+function displayLevel() {
   //display if user is correct
+  var userLevel = new Image();
+  userLevel.src = 'assets/level1.png';
+  document.querySelector('#gameResults').appendChild(userLevel);
+  document.querySelector('#gameResults').style.display = 'display';
 }
 
 function restart() {
   colors = [];
+  //find the div
+  let gameScreen = document.querySelector('#gameScreen');
+  while (gameScreen.firstChild) {
+    gameScreen.removeChild(gameScreen.lastChild);
+  }
   startGame();
 }
