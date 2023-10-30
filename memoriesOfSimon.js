@@ -3,6 +3,8 @@ let colors = [];
 let userColorPics = [];
 let positions = [];
 let level = 1;
+const nextLevel = document.getElementById("nextLevel");
+const vid = document.getElementById("winningVid");
 
 
 
@@ -19,10 +21,10 @@ class Game{
  startLevel(){
     this.populateColors();
     document.querySelector('#restart').addEventListener('click', restart);
+    
     document.querySelector('#title').style.animationName = 'titleSlideOut';
     this.shuffle(colors);
     this.generateCards(colors);
-    this.displayScore();
     this.shuffle(colors);
     // shuffle(positions);
     document.querySelector('#playButton').style.display = 'none';
@@ -33,8 +35,7 @@ class Game{
   };  
 
   generateCards(colors) {
-    let leng = colors.length;
-    for (let i = 0; i < leng; i++) {
+    for (let i = 0; i < colors.length; i++) {
       new Card(colors[i]);
     }
     document.querySelector('#gameScreen').style.height = `${
@@ -78,10 +79,6 @@ class Game{
         cards[i].flip();
       }, 2000);
     }
-  }
-
-  displayScore(){
-    //document.querySelector('#score').style.display = 'none';
   }
 }
 
@@ -151,18 +148,21 @@ class Card {
 }
 
 function startGame() {
-  game = new Game(2);
+  game = new Game();
   document.querySelector('#playButton').hidden = true;
   document.querySelector('#restart').hidden = false;
-
   game.startLevel();
 }
 
 function displayWonLevel(){
-  var vid = document.getElementById("winningVid");
+ 
   vid.hidden = false;
   vid.play();
+  nextLevel.addEventListener('click', startGame);
+  nextLevel.hidden = false;
+  level++;
 }
+
 function displayLevel() {
   //display if user is correct
   var userLevel = new Image();
@@ -173,10 +173,13 @@ function displayLevel() {
 
 function restart() {
   colors = [];
-  //find the div
   let gameScreen = document.querySelector('#gameScreen');
   while (gameScreen.firstChild) {
     gameScreen.removeChild(gameScreen.lastChild);
   }
+  nextLevel.hidden = true;
+  vid.hidden = true;
+
+  level = 1;
   startGame();
 }
